@@ -22,11 +22,33 @@ try {
       p.textContent = `Rating: ${movie.rating}`;
 
       const duracion = document.createElement("p");
-      duracion.textContent = `Duración: ${movie.length}`;
+      duracion.textContent = `Duración: ${movie.length?movie.length:0}`;
 
       const link = document.createElement("a");
       link.textContent = "Ver Más"
       link.setAttribute('href', `formulario.html?movie=${movie.id}`)
+      link.setAttribute('id',"botonFavorito")
+      link.classList.add("botonVerMas")
+
+      const addFavorite = document.createElement('button');
+      addFavorite.textContent="Añadir a favoritos";
+      addFavorite.classList.add("botonFavorito");
+      addFavorite.setAttribute('id',"botonFavorito");
+      addFavorite.addEventListener('click',function(){
+        if(localStorage.getItem('peliculasfavoritas')){
+          let peliculasfavoritas=localStorage.getItem('peliculasfavoritas');
+          let variableFavoritas = peliculasfavoritas.split("-");
+          if(!(variableFavoritas.includes(movie.id.toString()))){
+            peliculasfavoritas+="-"+movie.id;
+            localStorage.setItem('peliculasfavoritas',peliculasfavoritas);
+          }
+        }else{
+          let peliculasfavoritas=[];
+          peliculasfavoritas.push(movie.id)
+          localStorage.setItem('peliculasfavoritas',peliculasfavoritas);
+        }
+      })
+
 
       container.appendChild(card);
       card.appendChild(h1);
@@ -38,12 +60,10 @@ try {
       }
       card.appendChild(duracion);
       card.appendChild(link);
+      card.appendChild(addFavorite);
     });
 } catch (error) {
   console.log(error);
 }
 
-  /** Codigo que debemos usar para mostrar los datos en el frontend
-    
-  */
 };

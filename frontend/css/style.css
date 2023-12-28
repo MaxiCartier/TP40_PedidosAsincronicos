@@ -36,9 +36,24 @@ p {
   margin: 0;
 }
 
+a {
+  color: white;
+  background-image: linear-gradient(120deg, #6b7aa1 0%, #a683ca 100%); 
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 5px;
+}
+
+a {
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 .container {
   display: flex;
   flex-wrap: wrap;
+  text-align: center;
 }
 
 .card {
@@ -66,6 +81,38 @@ p {
   border: 0;
   margin: 5px;
 }
+.botonFavorito{
+  color: white;
+  background-image: linear-gradient(120deg, #fbc2eb 0%, #a6c1ee 100%);
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 10px;
+  border: 0;
+  margin: 5px;
+  text-decoration: none;
+}
+#botonFavorito:hover{
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.botonAgregar:hover , .botonModificar:hover{
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.botonVerMas {
+  color: white;
+  background-image: linear-gradient(120deg, #a683ca 0%, #6b7aa1 100%); 
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.botonVerMas:hover {
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
 .botonBorrar{
   color: white;
   background-image: linear-gradient(120deg, #BB2D3B 0%, #a6c1ee 100%);

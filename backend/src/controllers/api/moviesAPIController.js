@@ -30,21 +30,33 @@ const moviesAPIController = {
     },
     
     'detail': (req, res) => {
-        db.Movie.findByPk(req.params.id,
-            {
-                include : ['genre']
-            })
-            .then(movie => {
-                let respuesta = {
+        db.Movie.findByPk(req.params.id, {
+            include: ['genre']
+        })
+        .then(movie => {
+            let respuesta;
+            if (movie) {
+                respuesta = {
                     meta: {
                         status: 200,
-                        total: movie.length,
+                        total: 1,
                         url: '/api/movie/:id'
                     },
                     data: movie
-                }
-                res.json(respuesta);
-            });
+                };
+            } else {
+                respuesta = {
+                    meta: {
+                        status: 404,
+                        total: 0,
+                        url: '/api/movie/:id'
+                    },
+                    data: null
+                };
+            }
+            res.json(respuesta);
+        })
+        .catch(error => res.send(error));
     },
     'recomended': (req, res) => {
         db.Movie.findAll({
@@ -69,44 +81,40 @@ const moviesAPIController = {
         })
         .catch(error => console.log(error))
     },
-    create: (req,res) => {
-        
-        console.log('create',req.body, req.params)
-        Movies
-        .create(
-            {
-                title: req.body.title,
-                rating: req.body.rating,
-                awards: req.body.awards,
-                release_date: req.body.release_date,
-                length: req.body.length,
-                genre_id: req.body.genre_id
-            }
-        )
+    create: (req, res) => {
+        console.log('create', req.body, req.params);
+        Movies.create({
+            title: req.body.title,
+            rating: req.body.rating,
+            awards: req.body.awards,
+            release_date: req.body.release_date,
+            length: req.body.length,
+            genre_id: req.body.genre_id
+        })
         .then(confirm => {
             let respuesta;
-            if(confirm){
-                respuesta ={
+            if (confirm) {
+                respuesta = {
                     meta: {
                         status: 200,
-                        total: confirm.length,
+                        total: 1,
                         url: 'api/movies/create'
                     },
-                    data:confirm
-                }
-            }else{
-                respuesta ={
+                    data: confirm
+                };
+            } else {
+                respuesta = {
                     meta: {
-                        status: 200,
-                        total: confirm.length,
+                        status: 204,
+                        total: 0, 
                         url: 'api/movies/create'
                     },
-                    data:confirm
-                }
+                    data: null
+                };
             }
             res.json(respuesta);
-        })    
-        .catch(error => res.send(error))
+        })
+        .catch(error => res.send(error));
     },
     update: (req,res) => {
         let movieId = req.params.id;
@@ -152,33 +160,33 @@ const moviesAPIController = {
     destroy: (req, res) => {
         let movieId = req.params.id;
         console.log(movieId)
-        Movies
-        .destroy({where: {id: movieId}, force: true}) // force: true es para asegurar que se ejecute la acción
-        .then(confirm => {
-            let respuesta;
-            console.log('confirm', confirm)
-            if(confirm){
-                respuesta ={
-                    meta: {
-                        status: 200,
-                        total: confirm.length,
-                        url: 'api/movies/delete/:id'
-                    },
-                    data:confirm
+        Movies.destroy({ where: { id: movieId }, force: true })
+            .then(confirm => {
+                let respuesta;
+                console.log('confirm', confirm)
+                if (confirm) {
+                    respuesta = {
+                        meta: {
+                            status: 200,
+                            total: confirm.length,
+                            url: 'api/movies/delete/:id'
+                        },
+                        data: confirm
+                    }
+                } else {
+                    respuesta = {
+                        meta: {
+                            status: 204,
+                            total: confirm.length,
+                            url: 'api/movies/destroy/:id'
+                        },
+                        data: confirm
+                    }
                 }
-            }else{
-                respuesta ={
-                    meta: {
-                        status: 204,
-                        total: confirm.length,
-                        url: 'api/movies/destroy/:id'
-                    },
-                    data:confirm
-                }
-            }
-            res.json(respuesta);
-        })    
-        .catch(error => res.send(error))
+                
+                res.redirect('/home.html');
+            })
+            .catch(error => res.send(error))
     }
     
 }
